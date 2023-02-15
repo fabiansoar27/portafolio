@@ -1,6 +1,14 @@
 /*==================== GOOGLE FONTS ====================*/
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
 
+/*==================== ELIMINAR CUADRO AZUL ====================*/
+* {
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Standard */
+  }
+
 /*==================== VARIABLES CSS ====================*/
 :root {
     --header-height: 3rem;
@@ -400,7 +408,7 @@ img {
 .button--link{
   padding: 0;
   background-color: transparent;
-  color: var(--first-color);
+  color: var(--icon-color);
 }
 
 .button--link:hover{
@@ -463,7 +471,7 @@ img {
 .skills__icon,
 .skills__arrow{
   font-size: 2rem;
-  color: var(--first-color);
+  color: var(--icon-color);
 }
 
 .skills__icon{
@@ -660,7 +668,7 @@ img {
 .services__icon{
   display: block;
   font-size: 1.5rem;
-  color: var(--first-color);
+  color: var(--icon-color);
   margin-bottom: var(--mb-1);
 }
 
@@ -722,12 +730,12 @@ img {
   top: 1rem;
   right: 1rem;
   font-size: 1.5rem;
-  color: var(--first-color);
+  color: var(--icon-color);
   cursor: pointer;
 }
 
 .services__modal-icon{
-  color: var(--first-color);
+  color: var(--icon-color);
   margin-right: var(--mb-0-25);
 }
 
@@ -772,7 +780,7 @@ img {
 
 .swiper-portfolio-icon{
   font-size: 2rem;
-  color: var(--first-color);
+  color: var(--icon-color);
 }
 
 .swiper-button-prev{
@@ -788,7 +796,7 @@ img {
 }
 
 .swiper-pagination-bullet-active{
-  background-color: var(--first-color);
+  background-color: var(--icon-color);
 }
 
 .swiper-button-prev,
@@ -878,7 +886,7 @@ img {
 
 .contact__icon{
   font-size: 2rem;
-  color: var(--first-color);
+  color: var(--icon-color);
   margin-right: var(--mb-0-75);
 }
 
