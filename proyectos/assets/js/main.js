@@ -88,7 +88,8 @@ function scrollActive() {
             sectionTop = current.offsetTop - 58,
             sectionId = current.getAttribute('id')
 
-        const targetElement = document.querySelector('.nav__menu a[href*=' + sectionId + ']')
+        // Solo selecciona enlaces con href que comiencen con #
+        const targetElement = document.querySelector('.nav__menu a[href^="#' + sectionId + '"]')
         if (targetElement) {
             if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
                 targetElement.classList.add('active-link')
@@ -100,6 +101,7 @@ function scrollActive() {
 }
 
 window.addEventListener('scroll', scrollActive)
+
 
 /*=============== EMAIL JS ===============*/
 
