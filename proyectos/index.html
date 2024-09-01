@@ -20,6 +20,9 @@
         <!--=============== CSS ===============-->
         <link rel="stylesheet" href="assets/css/styles.css">
 
+        <!--=============== CALENDLY CSS ===============-->
+        <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+
         <!--==================== IMAGEN VISTA PREVIA ====================-->
         <meta property="og:image" content="https://fabiansoar27.github.io/portafolio/proyectos/assets/img/vistaprevia.png">
 
@@ -253,7 +256,7 @@
                         <h3 class="work__title">Néctar Mexicano</h3>
                         <span class="categoria">Rediseño de marca</span>
 
-                        <a href="https://drive.google.com/file/d/1gyV8i2_WQJJUOq384xewz9dGlNDNtctX/view?usp=sharing" target="_blank" class="work__button">
+                        <a href="https://drive.google.com/file/d/1gyV8i2_WQJJUOq384xewz9dGlNDNtctX/view" target="_blank" class="work__button">
                             Detalles <i class='bx bx-right-arrow-alt work__icon'></i>
                         </a>
                     </div>
@@ -272,16 +275,6 @@
 
                         <div class="contact__info">
                             <div class="contact__card">
-                                <i class='bx bx-mail-send contact__card-icon'></i>
-                                <h3 class="contact__card-title">Correo electrónico</h3>
-                                <span class="contact__card-data">fartigas27@gmail.com</span>
-
-                                <a href="mailto:fartigas27@gmail.com" target="_blank" class="contact__button">
-                                    Escríbeme <i class='bx bx-right-arrow-alt contact__button-icon'></i>
-                                </a>
-                            </div>
-
-                            <div class="contact__card">
                                 <i class='bx bxl-whatsapp contact__card-icon'></i>
                                 <h3 class="contact__card-title">WhatsApp</h3>
                                 <span class="contact__card-data">+52 294 112 9950</span>
@@ -298,6 +291,16 @@
 
                                 <a href="https://m.me/61560494786588" target="_blank" class="contact__button">
                                     Escríbeme <i class='bx bx-right-arrow-alt contact__button-icon'></i>
+                                </a>
+                            </div>
+
+                            <div class="contact__card">
+                                <i class='bx bx-calendar contact__card-icon'></i>
+                                <h3 class="contact__card-title">Calendly</h3>
+                                <!--<span class="contact__card-data">fartigas27@gmail.com</span>-->
+
+                                <a href="" onclick="Calendly.initPopupWidget({url: 'https://calendly.com/fartigas27?primary_color=51020b'});return false;" class="contact__button">
+                                    Agendar una cita <i class='bx bx-right-arrow-alt contact__button-icon'></i>
                                 </a>
                             </div>
                         </div>
@@ -401,5 +404,8 @@
 
         <!--=============== MAIN JS ===============-->
         <script src="assets/js/main.js"></script>
+
+        <!--=============== CALENDLY JS ===============-->
+        <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
     </body>
 </html>
