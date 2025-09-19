@@ -131,7 +131,7 @@ const sendEmail = (e) => {
    }
    
    // Enviar correo
-   emailjs.sendForm('service_dnbv2ii', 'template_o84eh2m', '#mensaje', '3s_fsEYl-fBvGve7d')
+   emailjs.sendForm('service_zhiwxi8', 'template_ezusmba', '#mensaje', 'DSlbjFbLwinGalXdC')
    .then(() => {
       contactMessage.innerHTML = "Mensaje enviado. <i class='bx bx-message-check'></i>";
       showToastNotification();
