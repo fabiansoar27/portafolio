@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { supabase } from '../supabaseClient';
+import ProjectDetailSkeleton from '../components/ProjectDetailSkeleton';
 
 const ProjectDetail = () => {
   const { id } = useParams();
@@ -138,7 +139,7 @@ const ProjectDetail = () => {
         <main className="main">
           <section className="project-detail section">
             <div className="container">
-              <p>Cargando proyecto...</p>
+              <ProjectDetailSkeleton />
             </div>
           </section>
         </main>

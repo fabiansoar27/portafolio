@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Preloader from '../components/Preloader';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
@@ -11,36 +11,35 @@ import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import { trackVisit } from '../services/metricsService';
 
-/**
- * Home page component - Public landing page
- * Integrates all public components and tracks visits
- */
 const Home = () => {
-  useEffect(() => {
-    // Track visit when page loads
-    trackVisit();
+  const [loading, setLoading] = useState(true);
 
-    // SEO Meta tags
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+
     document.title = 'Fabián - Portafolio';
     
-    // Meta description
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute('content', 'Portafolio de Fabián - Diseñador gráfico y desarrollador web. Explora mis proyectos de diseño, desarrollo y más.');
     }
 
-    // Open Graph tags
     updateMetaTag('og:title', 'Fabián - Portafolio');
     updateMetaTag('og:description', 'Portafolio de Fabián - Diseñador gráfico y desarrollador web. Explora mis proyectos de diseño, desarrollo y más.');
     updateMetaTag('og:type', 'website');
     updateMetaTag('og:url', window.location.href);
     updateMetaTag('og:image', `${window.location.origin}/og-image.jpg`);
     
-    // Twitter Card tags
     updateMetaTag('twitter:card', 'summary_large_image');
     updateMetaTag('twitter:title', 'Fabián - Portafolio');
     updateMetaTag('twitter:description', 'Portafolio de Fabián - Diseñador gráfico y desarrollador web.');
     updateMetaTag('twitter:image', `${window.location.origin}/og-image.jpg`);
+    
+    trackVisit();
+
+    return () => clearTimeout(timer);
   }, []);
 
   const updateMetaTag = (property, content) => {
@@ -59,9 +58,12 @@ const Home = () => {
     meta.setAttribute('content', content);
   };
 
+  if (loading) {
+    return <Preloader />;
+  }
+
   return (
     <>
-      <Preloader />
       <Navbar />
       <main className="main">
         <Hero />

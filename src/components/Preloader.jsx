@@ -1,38 +1,17 @@
-import { useState, useEffect } from 'react';
+import React from 'react';
 
 const Preloader = () => {
-  const [isVisible, setIsVisible] = useState(true);
-
-  useEffect(() => {
-    const handleLoad = () => {
-      setIsVisible(false);
-    };
-
-    // Check if page is already loaded
-    if (document.readyState === 'complete') {
-      handleLoad();
-    } else {
-      window.addEventListener('load', handleLoad);
-    }
-
-    return () => {
-      window.removeEventListener('load', handleLoad);
-    };
-  }, []);
-
-  if (!isVisible) return null;
-
   return (
-    <div className="contenedor_loader">
-      <div className="loader"></div>
-      <div className="loader"></div>
-      <div className="loader"></div>
-      <div className="loader"></div>
-      <div className="loader"></div>
-      <div className="loader"></div>
-      <div className="loader"></div>
-      <div className="loader"></div>
-      <div className="loader"></div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#50020B]">
+      <div className="flex flex-row gap-2">
+        <div className="w-4 h-4 rounded-full bg-white animate-bounce"></div>
+        <div
+          className="w-4 h-4 rounded-full bg-white animate-bounce [animation-delay:-.3s]"
+        ></div>
+        <div
+          className="w-4 h-4 rounded-full bg-white animate-bounce [animation-delay:-.5s]"
+        ></div>
+      </div>
     </div>
   );
 };

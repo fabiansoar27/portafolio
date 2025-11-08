@@ -3,13 +3,19 @@ import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import useProjects from '../hooks/useProjects';
+import Preloader from '../components/Preloader';
 
 const ProjectsList = () => {
   const { projects, loading, error } = useProjects();
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [sortOrder, setSortOrder] = useState('newest');
+  const [displayLoading, setDisplayLoading] = useState(true);
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      setDisplayLoading(false);
+    }, 1500);
+
     window.scrollTo(0, 0);
 
     // SEO Meta tags
@@ -30,6 +36,8 @@ const ProjectsList = () => {
     updateMetaTag('twitter:title', 'Fabián - Proyectos');
     updateMetaTag('twitter:description', 'Explora todos mis proyectos de diseño gráfico, desarrollo web y más.');
     updateMetaTag('twitter:image', `${window.location.origin}/og-image.jpg`);
+
+    return () => clearTimeout(timer);
   }, []);
 
   const updateMetaTag = (property, content) => {
@@ -104,21 +112,8 @@ const ProjectsList = () => {
     return result;
   }, [projects, categoryFilter, sortOrder]);
 
-  if (loading) {
-    return (
-      <>
-        <Navbar />
-        <main className="main">
-          <section className="projects-page section">
-            <div className="container">
-              <h1 className="section__title">Portafolio Completo</h1>
-              <p>Cargando proyectos...</p>
-            </div>
-          </section>
-        </main>
-        <Footer />
-      </>
-    );
+  if (loading || displayLoading) {
+    return <Preloader />;
   }
 
   if (error) {
