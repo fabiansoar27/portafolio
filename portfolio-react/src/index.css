@@ -1,0 +1,7 @@
+/* Vite default styles removed to use portfolio styles */
+
+body {
+  margin: 0;
+  padding: 0;
+  min-width: 320px;
+}
