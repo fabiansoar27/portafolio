@@ -3,7 +3,6 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { supabase } from '../supabaseClient';
-import ProjectDetailSkeleton from '../components/ProjectDetailSkeleton';
 
 const ProjectDetail = () => {
   const { id } = useParams();
@@ -72,41 +71,34 @@ const ProjectDetail = () => {
     try {
       setLoading(true);
   
-      const fetchPromise = (async () => {
-        // Obtener detalles del proyecto por slug
-        const { data: projectData, error: projectError } = await supabase
-          .from('projects')
-          .select('*')
-          .eq('slug', id)
-          .single();
-  
-        if (projectError) throw projectError;
-        
-        if (!projectData) {
-          setError('Proyecto no encontrado');
-          return; // No continuar si no hay proyecto
-        }
-  
-        setProject(projectData);
-  
-        // Obtener proyectos relacionados
-        const { data: relatedData, error: relatedError } = await supabase
-          .from('projects')
-          .select('*')
-          .eq('category', projectData.category)
-          .neq('slug', id);
-  
-        if (relatedError) throw relatedError;
-        
-        const shuffled = (relatedData || []).sort(() => Math.random() - 0.5);
-        setRelatedProjects(shuffled.slice(0, 3));
-      })();
-  
-      // Garantizar un tiempo de carga mínimo de 1 segundo
-      const delayPromise = new Promise(resolve => setTimeout(resolve, 1000));
-  
-      // Esperar a que ambas promesas se resuelvan
-      await Promise.all([fetchPromise, delayPromise]);
+      // Obtener detalles del proyecto por slug
+      const { data: projectData, error: projectError } = await supabase
+        .from('projects')
+        .select('*')
+        .eq('slug', id)
+        .single();
+
+      if (projectError) throw projectError;
+      
+      if (!projectData) {
+        setError('Proyecto no encontrado');
+        setLoading(false);
+        return;
+      }
+
+      setProject(projectData);
+
+      // Obtener proyectos relacionados
+      const { data: relatedData, error: relatedError } = await supabase
+        .from('projects')
+        .select('*')
+        .eq('category', projectData.category)
+        .neq('slug', id);
+
+      if (relatedError) throw relatedError;
+      
+      const shuffled = (relatedData || []).sort(() => Math.random() - 0.5);
+      setRelatedProjects(shuffled.slice(0, 3));
   
     } catch (err) {
       console.error('Error fetching project:', err);
@@ -137,22 +129,6 @@ const ProjectDetail = () => {
     // Si no es válido, devolver el string original
     return dateString;
   };
-
-  if (loading) {
-    return (
-      <>
-        <Navbar />
-        <main className="main">
-          <section className="project-detail section">
-            <div className="container">
-              <ProjectDetailSkeleton />
-            </div>
-          </section>
-        </main>
-        <Footer />
-      </>
-    );
-  }
 
   if (error || !project) {
     return (

@@ -9,16 +9,10 @@ const ProjectsList = () => {
   const { projects, loading, error } = useProjects();
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [sortOrder, setSortOrder] = useState('newest');
-  const [displayLoading, setDisplayLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setDisplayLoading(false);
-    }, 1500);
-
     window.scrollTo(0, 0);
 
-    // SEO Meta tags
     document.title = 'Fabián - Proyectos';
     
     const metaDescription = document.querySelector('meta[name="description"]');
@@ -37,7 +31,6 @@ const ProjectsList = () => {
     updateMetaTag('twitter:description', 'Explora todos mis proyectos de diseño gráfico, desarrollo web y más.');
     updateMetaTag('twitter:image', `${window.location.origin}/og-image.jpg`);
 
-    return () => clearTimeout(timer);
   }, []);
 
   const updateMetaTag = (property, content) => {
@@ -56,7 +49,6 @@ const ProjectsList = () => {
     meta.setAttribute('content', content);
   };
 
-  // Función para extraer texto plano de HTML
   const stripHtml = (html) => {
     if (!html) return '';
     const tmp = document.createElement('div');
@@ -64,18 +56,15 @@ const ProjectsList = () => {
     return tmp.textContent || tmp.innerText || '';
   };
 
-  // Filtrar y ordenar proyectos
   const filteredAndSortedProjects = useMemo(() => {
     let result = [...projects];
 
-    // Filtrar por categoría
     if (categoryFilter !== 'all') {
       result = result.filter(project => 
         project.category.toLowerCase() === categoryFilter.toLowerCase()
       );
     }
 
-    // Ordenar
     switch (sortOrder) {
       case 'newest':
         result.sort((a, b) => {
@@ -112,7 +101,7 @@ const ProjectsList = () => {
     return result;
   }, [projects, categoryFilter, sortOrder]);
 
-  if (loading || displayLoading) {
+  if (loading) {
     return <Preloader />;
   }
 
@@ -139,7 +128,6 @@ const ProjectsList = () => {
       <main className="main">
         <section className="projects-page section" id="proyectos">
           <div className="projects-page__container">
-            {/* Header con filtros */}
             <div className="projects-page__header">
               <div className="projects-page__tabs">
                 <button 
@@ -189,7 +177,6 @@ const ProjectsList = () => {
               </div>
             </div>
 
-            {/* Grid de proyectos */}
             <div className="work__container container grid">
               {filteredAndSortedProjects.length === 0 ? (
                 <p className="projects-page__empty">No hay proyectos en esta categoría</p>

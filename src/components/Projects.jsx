@@ -4,26 +4,6 @@ import useProjects from '../hooks/useProjects';
 const Projects = () => {
   const { projects, loading, error } = useProjects(4);
 
-  if (loading) {
-    return (
-      <section className="work section" id="portafolio">
-        <span className="section__subtitle">Portafolio</span>
-        <h2 className="section__title">Últimos proyectos</h2>
-        <div className="container">Cargando proyectos...</div>
-      </section>
-    );
-  }
-
-  if (error) {
-    return (
-      <section className="work section" id="portafolio">
-        <span className="section__subtitle">Portafolio</span>
-        <h2 className="section__title">Últimos proyectos</h2>
-        <div className="container">Error al cargar proyectos: {error}</div>
-      </section>
-    );
-  }
-
   return (
     <section className="work section" id="portafolio">
       <span className="section__subtitle">Portafolio</span>

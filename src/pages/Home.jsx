@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import Preloader from '../components/Preloader';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import About from '../components/About';
@@ -10,15 +9,14 @@ import Testimonials from '../components/Testimonials';
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import { trackVisit } from '../services/metricsService';
+import useProjects from '../hooks/useProjects';
+import useTestimonials from '../hooks/useTestimonials';
 
 const Home = () => {
-  const [loading, setLoading] = useState(true);
+  const { loading: projectsLoading } = useProjects(4);
+  const { loading: testimonialsLoading } = useTestimonials(4);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1500);
-
     document.title = 'Fabián - Portafolio';
     
     const metaDescription = document.querySelector('meta[name="description"]');
@@ -38,8 +36,6 @@ const Home = () => {
     updateMetaTag('twitter:image', `${window.location.origin}/og-image.jpg`);
     
     trackVisit();
-
-    return () => clearTimeout(timer);
   }, []);
 
   const updateMetaTag = (property, content) => {
@@ -57,10 +53,6 @@ const Home = () => {
     }
     meta.setAttribute('content', content);
   };
-
-  if (loading) {
-    return <Preloader />;
-  }
 
   return (
     <>
