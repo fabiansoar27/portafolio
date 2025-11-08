@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import useProjects from '../hooks/useProjects';
-import Preloader from '../components/Preloader';
 
 const ProjectsList = () => {
   const { projects, loading, error } = useProjects();
@@ -100,10 +99,6 @@ const ProjectsList = () => {
 
     return result;
   }, [projects, categoryFilter, sortOrder]);
-
-  if (loading) {
-    return <Preloader />;
-  }
 
   if (error) {
     return (
