@@ -9,7 +9,6 @@ import Projects from '../components/Projects';
 import Testimonials from '../components/Testimonials';
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
-import WhatsAppButton from '../components/WhatsAppButton';
 import { trackVisit } from '../services/metricsService';
 
 /**
@@ -74,7 +73,6 @@ const Home = () => {
         <Contact />
       </main>
       <Footer />
-      <WhatsAppButton />
     </>
   );
 };
