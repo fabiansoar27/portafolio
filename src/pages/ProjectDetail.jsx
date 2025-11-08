@@ -71,37 +71,43 @@ const ProjectDetail = () => {
   const fetchProjectDetails = async () => {
     try {
       setLoading(true);
-      
-      // Obtener detalles del proyecto por slug
-      const { data: projectData, error: projectError } = await supabase
-        .from('projects')
-        .select('*')
-        .eq('slug', id)
-        .single();
-
-      if (projectError) throw projectError;
-      
-      if (!projectData) {
-        setError('Proyecto no encontrado');
-        setLoading(false);
-        return;
-      }
-
-      setProject(projectData);
-
-      // Obtener proyectos relacionados (misma categoría, excluyendo el actual, orden aleatorio)
-      const { data: relatedData, error: relatedError } = await supabase
-        .from('projects')
-        .select('*')
-        .eq('category', projectData.category)
-        .neq('slug', id);
-
-      if (relatedError) throw relatedError;
-      
-      // Mezclar aleatoriamente y tomar solo 3
-      const shuffled = (relatedData || []).sort(() => Math.random() - 0.5);
-      setRelatedProjects(shuffled.slice(0, 3));
-
+  
+      const fetchPromise = (async () => {
+        // Obtener detalles del proyecto por slug
+        const { data: projectData, error: projectError } = await supabase
+          .from('projects')
+          .select('*')
+          .eq('slug', id)
+          .single();
+  
+        if (projectError) throw projectError;
+        
+        if (!projectData) {
+          setError('Proyecto no encontrado');
+          return; // No continuar si no hay proyecto
+        }
+  
+        setProject(projectData);
+  
+        // Obtener proyectos relacionados
+        const { data: relatedData, error: relatedError } = await supabase
+          .from('projects')
+          .select('*')
+          .eq('category', projectData.category)
+          .neq('slug', id);
+  
+        if (relatedError) throw relatedError;
+        
+        const shuffled = (relatedData || []).sort(() => Math.random() - 0.5);
+        setRelatedProjects(shuffled.slice(0, 3));
+      })();
+  
+      // Garantizar un tiempo de carga mínimo de 1 segundo
+      const delayPromise = new Promise(resolve => setTimeout(resolve, 1000));
+  
+      // Esperar a que ambas promesas se resuelvan
+      await Promise.all([fetchPromise, delayPromise]);
+  
     } catch (err) {
       console.error('Error fetching project:', err);
       setError(err.message);
