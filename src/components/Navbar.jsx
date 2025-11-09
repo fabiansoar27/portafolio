@@ -66,15 +66,8 @@ const Navbar = () => {
         setActiveLink(href);
       }
     } else {
-      // Si estamos en otra página, navegar a home primero
-      navigate('/');
-      // Esperar a que cargue y hacer scroll
-      setTimeout(() => {
-        const element = document.querySelector(href);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 100);
+      // Si estamos en otra página, navegar a home con el hash
+      navigate(`/${href}`);
     }
   };
 

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import About from '../components/About';
@@ -16,6 +17,7 @@ const Home = () => {
   const [preloaderVisible, setPreloaderVisible] = useState(true);
   const [fadeOut, setFadeOut] = useState(false);
   const [showContent, setShowContent] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     // Inicia el desvanecimiento del preloader
@@ -39,6 +41,15 @@ const Home = () => {
       clearTimeout(hidePreloaderTimer);
     };
   }, []);
+
+  useEffect(() => {
+    if (showContent && location.hash) {
+      const element = document.querySelector(location.hash);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [showContent, location]);
 
   useEffect(() => {
     document.title = 'Fabián - Portafolio';
