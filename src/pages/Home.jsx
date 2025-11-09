@@ -10,25 +10,28 @@ import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import Preloader from '../components/Preloader';
 import { trackVisit } from '../services/metricsService';
-import '../assets/css/animations.css'; // Importa las animaciones
+import '../assets/css/animations.css';
 
 const Home = () => {
-  const [showPreloader, setShowPreloader] = useState(true);
+  const [preloaderVisible, setPreloaderVisible] = useState(true);
   const [fadeOut, setFadeOut] = useState(false);
   const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
+    // Inicia el desvanecimiento del preloader
     const fadeOutTimer = setTimeout(() => {
       setFadeOut(true);
     }, 1500);
 
+    // Muestra el contenido (aún invisible, pero presente para el renderizado)
     const showContentTimer = setTimeout(() => {
       setShowContent(true);
-    }, 1500); // Inicia la animación de entrada al mismo tiempo que la de salida
+    }, 1500); // Sincronizado con el inicio del fade-out
 
+    // Elimina completamente el preloader del DOM después de la animación
     const hidePreloaderTimer = setTimeout(() => {
-      setShowPreloader(false);
-    }, 2000);
+      setPreloaderVisible(false);
+    }, 2000); // 1500ms (inicio) + 500ms (duración de la animación)
 
     return () => {
       clearTimeout(fadeOutTimer);
@@ -77,7 +80,7 @@ const Home = () => {
 
   return (
     <>
-      {showPreloader && <Preloader className={fadeOut ? 'fade-out' : ''} />}
+      {preloaderVisible && <Preloader className={fadeOut ? 'fade-out' : ''} />}
       <div 
         className={showContent ? 'fade-in' : ''}
         style={{ visibility: showContent ? 'visible' : 'hidden' }}

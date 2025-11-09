@@ -11,13 +11,31 @@ const ProjectsList = () => {
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [sortOrder, setSortOrder] = useState('newest');
   const [showContent, setShowContent] = useState(false);
+  const [preloaderVisible, setPreloaderVisible] = useState(true);
+  const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
     if (!loading) {
-      const timer = setTimeout(() => {
+      // Inicia el desvanecimiento del preloader
+      const fadeOutTimer = setTimeout(() => {
+        setFadeOut(true);
+      }, 0); // Inicia inmediatamente cuando la carga termina
+
+      // Muestra el contenido (aún invisible)
+      const showContentTimer = setTimeout(() => {
         setShowContent(true);
-      }, 500); // Coincide con la duración de la animación de fade-out
-      return () => clearTimeout(timer);
+      }, 0); // Sincronizado con el inicio del fade-out
+
+      // Elimina completamente el preloader del DOM después de la animación
+      const hidePreloaderTimer = setTimeout(() => {
+        setPreloaderVisible(false);
+      }, 500); // Duración de la animación de fade-out
+
+      return () => {
+        clearTimeout(fadeOutTimer);
+        clearTimeout(showContentTimer);
+        clearTimeout(hidePreloaderTimer);
+      };
     }
   }, [loading]);
 
@@ -131,7 +149,7 @@ const ProjectsList = () => {
 
   return (
     <>
-      <Preloader className={!loading ? 'fade-out' : ''} />
+      {preloaderVisible && <Preloader className={fadeOut ? 'fade-out' : ''} />}
       <div 
         className={showContent ? 'fade-in' : ''}
         style={{ visibility: showContent ? 'visible' : 'hidden' }}
