@@ -8,13 +8,18 @@ import Projects from '../components/Projects';
 import Testimonials from '../components/Testimonials';
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
+import Preloader from '../components/Preloader';
 import { trackVisit } from '../services/metricsService';
-import useProjects from '../hooks/useProjects';
-import useTestimonials from '../hooks/useTestimonials';
 
 const Home = () => {
-  const { loading: projectsLoading } = useProjects(4);
-  const { loading: testimonialsLoading } = useTestimonials(4);
+  const [showPreloader, setShowPreloader] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowPreloader(false);
+    }, 2000); // 2 seconds
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     document.title = 'Fabián - Portafolio';
@@ -56,17 +61,21 @@ const Home = () => {
 
   return (
     <>
-      <Navbar />
-      <main className="main">
-        <Hero />
-        <About />
-        <Skills />
-        <Services />
-        <Projects />
-        <Testimonials />
-        <Contact />
-      </main>
-      <Footer />
+      {showPreloader ? <Preloader /> : (
+        <>
+          <Navbar />
+          <main className="main">
+            <Hero />
+            <About />
+            <Skills />
+            <Services />
+            <Projects />
+            <Testimonials />
+            <Contact />
+          </main>
+          <Footer />
+        </>
+      )}
     </>
   );
 };
