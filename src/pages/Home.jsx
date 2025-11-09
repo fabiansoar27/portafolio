@@ -71,21 +71,19 @@ const Home = () => {
   return (
     <>
       {showPreloader && <Preloader className={fadeOut ? 'fade-out' : ''} />}
-      {!showPreloader && (
-        <>
-          <Navbar />
-          <main className="main">
-            <Hero />
-            <About />
-            <Skills />
-            <Services />
-            <Projects />
-            <Testimonials />
-            <Contact />
-          </main>
-          <Footer />
-        </>
-      )}
+      <div style={{ visibility: showPreloader ? 'hidden' : 'visible' }}>
+        <Navbar />
+        <main className="main">
+          <Hero />
+          <About />
+          <Skills />
+          <Services />
+          <Projects />
+          <Testimonials />
+          <Contact />
+        </main>
+        <Footer />
+      </div>
     </>
   );
 };
