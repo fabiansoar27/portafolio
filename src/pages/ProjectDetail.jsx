@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import ProjectDetailSkeleton from '../components/ProjectDetailSkeleton';
 import { supabase } from '../supabaseClient';
 
 const ProjectDetail = () => {
@@ -129,6 +130,22 @@ const ProjectDetail = () => {
     // Si no es válido, devolver el string original
     return dateString;
   };
+
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <main className="main">
+          <section className="project-detail section">
+            <div className="container">
+              <ProjectDetailSkeleton />
+            </div>
+          </section>
+        </main>
+        <Footer />
+      </>
+    );
+  }
 
   if (error || !project) {
     return (
