@@ -9,6 +9,16 @@ const ProjectsList = () => {
   const { projects, loading, error } = useProjects();
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [sortOrder, setSortOrder] = useState('newest');
+  const [showContent, setShowContent] = useState(false);
+
+  useEffect(() => {
+    if (!loading) {
+      const timer = setTimeout(() => {
+        setShowContent(true);
+      }, 500); // Animation duration
+      return () => clearTimeout(timer);
+    }
+  }, [loading]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -118,90 +128,90 @@ const ProjectsList = () => {
     );
   }
 
+  if (!showContent) {
+    return <Preloader className={!loading ? 'fade-out' : ''} />;
+  }
+
   return (
     <>
-      {loading ? <Preloader /> : (
-        <>
-          <Navbar />
-          <main className="main">
-            <section className="projects-page section" id="proyectos">
-              <div className="projects-page__container">
-                <div className="projects-page__header">
-                  <div className="projects-page__tabs">
-                    <button 
-                      className={`projects-page__tab ${categoryFilter === 'all' ? 'active' : ''}`}
-                      onClick={() => setCategoryFilter('all')}
-                    >
-                      Proyectos
-                    </button>
-                    <button 
-                      className={`projects-page__tab ${categoryFilter === 'Diseño Gráfico' ? 'active' : ''}`}
-                      onClick={() => setCategoryFilter('Diseño Gráfico')}
-                    >
-                      Diseño Gráfico
-                    </button>
-                    <button 
-                      className={`projects-page__tab ${categoryFilter === 'Desarrollo Web' ? 'active' : ''}`}
-                      onClick={() => setCategoryFilter('Desarrollo Web')}
-                    >
-                      Desarrollo Web
-                    </button>
-                    <button 
-                      className={`projects-page__tab ${categoryFilter === 'Aplicaciones Moviles' ? 'active' : ''}`}
-                      onClick={() => setCategoryFilter('Aplicaciones Moviles')}
-                    >
-                      Aplicaciones Moviles
-                    </button>
-                    <button 
-                      className={`projects-page__tab ${categoryFilter === 'Videojuegos' ? 'active' : ''}`}
-                      onClick={() => setCategoryFilter('Videojuegos')}
-                    >
-                      Videojuegos
-                    </button>
-                  </div>
+      <Navbar />
+      <main className="main">
+        <section className="projects-page section" id="proyectos">
+          <div className="projects-page__container">
+            <div className="projects-page__header">
+              <div className="projects-page__tabs">
+                <button 
+                  className={`projects-page__tab ${categoryFilter === 'all' ? 'active' : ''}`}
+                  onClick={() => setCategoryFilter('all')}
+                >
+                  Proyectos
+                </button>
+                <button 
+                  className={`projects-page__tab ${categoryFilter === 'Diseño Gráfico' ? 'active' : ''}`}
+                  onClick={() => setCategoryFilter('Diseño Gráfico')}
+                >
+                  Diseño Gráfico
+                </button>
+                <button 
+                  className={`projects-page__tab ${categoryFilter === 'Desarrollo Web' ? 'active' : ''}`}
+                  onClick={() => setCategoryFilter('Desarrollo Web')}
+                >
+                  Desarrollo Web
+                </button>
+                <button 
+                  className={`projects-page__tab ${categoryFilter === 'Aplicaciones Moviles' ? 'active' : ''}`}
+                  onClick={() => setCategoryFilter('Aplicaciones Moviles')}
+                >
+                  Aplicaciones Moviles
+                </button>
+                <button 
+                  className={`projects-page__tab ${categoryFilter === 'Videojuegos' ? 'active' : ''}`}
+                  onClick={() => setCategoryFilter('Videojuegos')}
+                >
+                  Videojuegos
+                </button>
+              </div>
 
-                  <div className="projects-page__actions">
-                    <div className="projects-page__sort-wrapper">
-                      <i className='bx bx-filter-alt projects-page__sort-icon'></i>
-                      <select 
-                        className="projects-page__sort"
-                        value={sortOrder}
-                        onChange={(e) => setSortOrder(e.target.value)}
-                      >
-                        <option value="newest">Más reciente</option>
-                        <option value="oldest">Más antiguo</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="work__container container grid">
-                  {filteredAndSortedProjects.length === 0 ? (
-                    <p className="projects-page__empty">No hay proyectos en esta categoría</p>
-                  ) : (
-                    filteredAndSortedProjects.map((project) => (
-                      <div key={project.id} className="work__card">
-                        <img src={project.image_url} alt={project.title} className="work__img" />
-                        <h3 className="work__title">{project.title}</h3>
-                        {project.description && (
-                          <p className="work__description">{stripHtml(project.description)}</p>
-                        )}
-                        <Link 
-                          to={`/proyectos/${project.slug}`}
-                          className="work__button"
-                        >
-                          Ver detalles <i className='bx bx-right-arrow-alt work__icon'></i>
-                        </Link>
-                      </div>
-                    ))
-                  )}
+              <div className="projects-page__actions">
+                <div className="projects-page__sort-wrapper">
+                  <i className='bx bx-filter-alt projects-page__sort-icon'></i>
+                  <select 
+                    className="projects-page__sort"
+                    value={sortOrder}
+                    onChange={(e) => setSortOrder(e.target.value)}
+                  >
+                    <option value="newest">Más reciente</option>
+                    <option value="oldest">Más antiguo</option>
+                  </select>
                 </div>
               </div>
-            </section>
-          </main>
-          <Footer />
-        </>
-      )}
+            </div>
+
+            <div className="work__container container grid">
+              {filteredAndSortedProjects.length === 0 ? (
+                <p className="projects-page__empty">No hay proyectos en esta categoría</p>
+              ) : (
+                filteredAndSortedProjects.map((project) => (
+                  <div key={project.id} className="work__card">
+                    <img src={project.image_url} alt={project.title} className="work__img" />
+                    <h3 className="work__title">{project.title}</h3>
+                    {project.description && (
+                      <p className="work__description">{stripHtml(project.description)}</p>
+                    )}
+                    <Link 
+                      to={`/proyectos/${project.slug}`}
+                      className="work__button"
+                    >
+                      Ver detalles <i className='bx bx-right-arrow-alt work__icon'></i>
+                    </Link>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </section>
+      </main>
+      <Footer />
     </>
   );
 };

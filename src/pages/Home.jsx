@@ -13,12 +13,21 @@ import { trackVisit } from '../services/metricsService';
 
 const Home = () => {
   const [showPreloader, setShowPreloader] = useState(true);
+  const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const fadeTimer = setTimeout(() => {
+      setFadeOut(true);
+    }, 1500);
+
+    const hideTimer = setTimeout(() => {
       setShowPreloader(false);
-    }, 2000); // 2 seconds
-    return () => clearTimeout(timer);
+    }, 2000);
+
+    return () => {
+      clearTimeout(fadeTimer);
+      clearTimeout(hideTimer);
+    };
   }, []);
 
   useEffect(() => {
@@ -61,7 +70,8 @@ const Home = () => {
 
   return (
     <>
-      {showPreloader ? <Preloader /> : (
+      {showPreloader && <Preloader className={fadeOut ? 'fade-out' : ''} />}
+      {!showPreloader && (
         <>
           <Navbar />
           <main className="main">
