@@ -4,11 +4,22 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Preloader from '../components/Preloader';
 import useProjects from '../hooks/useProjects';
+import '../assets/css/animations.css'; // Importa las animaciones
 
 const ProjectsList = () => {
   const { projects, loading, error } = useProjects();
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [sortOrder, setSortOrder] = useState('newest');
+  const [showContent, setShowContent] = useState(false);
+
+  useEffect(() => {
+    if (!loading) {
+      const timer = setTimeout(() => {
+        setShowContent(true);
+      }, 500); // Coincide con la duración de la animación de fade-out
+      return () => clearTimeout(timer);
+    }
+  }, [loading]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -121,7 +132,10 @@ const ProjectsList = () => {
   return (
     <>
       <Preloader className={!loading ? 'fade-out' : ''} />
-      <div style={{ visibility: loading ? 'hidden' : 'visible' }}>
+      <div 
+        className={showContent ? 'fade-in' : ''}
+        style={{ visibility: showContent ? 'visible' : 'hidden' }}
+      >
         <Navbar />
         <main className="main">
           <section className="projects-page section" id="proyectos">

@@ -10,23 +10,30 @@ import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import Preloader from '../components/Preloader';
 import { trackVisit } from '../services/metricsService';
+import '../assets/css/animations.css'; // Importa las animaciones
 
 const Home = () => {
   const [showPreloader, setShowPreloader] = useState(true);
   const [fadeOut, setFadeOut] = useState(false);
+  const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
-    const fadeTimer = setTimeout(() => {
+    const fadeOutTimer = setTimeout(() => {
       setFadeOut(true);
     }, 1500);
 
-    const hideTimer = setTimeout(() => {
+    const showContentTimer = setTimeout(() => {
+      setShowContent(true);
+    }, 1500); // Inicia la animación de entrada al mismo tiempo que la de salida
+
+    const hidePreloaderTimer = setTimeout(() => {
       setShowPreloader(false);
     }, 2000);
 
     return () => {
-      clearTimeout(fadeTimer);
-      clearTimeout(hideTimer);
+      clearTimeout(fadeOutTimer);
+      clearTimeout(showContentTimer);
+      clearTimeout(hidePreloaderTimer);
     };
   }, []);
 
@@ -71,7 +78,10 @@ const Home = () => {
   return (
     <>
       {showPreloader && <Preloader className={fadeOut ? 'fade-out' : ''} />}
-      <div style={{ visibility: showPreloader ? 'hidden' : 'visible' }}>
+      <div 
+        className={showContent ? 'fade-in' : ''}
+        style={{ visibility: showContent ? 'visible' : 'hidden' }}
+      >
         <Navbar />
         <main className="main">
           <Hero />
