@@ -37,7 +37,7 @@ const Hero = () => {
                 className="home__client-link"
               >
                 <img
-                  src="/assets/img/Advant-Logo.svg"
+                  src="/assets/img/Advant-Logo.png"
                   alt="Advantms"
                   className="home__client-logo"
                 />
@@ -49,7 +49,7 @@ const Hero = () => {
                 className="home__client-link"
               >
                 <img
-                  src="/assets/img/Yoel-Logo.svg"
+                  src="/assets/img/Yoel-Logo.png"
                   alt="Eco Heroes MX"
                   className="home__client-logo"
                 />
@@ -61,7 +61,7 @@ const Hero = () => {
                 className="home__client-link"
               >
                 <img
-                  src="/assets/img/Mezkla-Logo.svg"
+                  src="/assets/img/Mezkla-Logo.png"
                   alt="Mezkla FM"
                   className="home__client-logo"
                 />
@@ -84,7 +84,7 @@ const Hero = () => {
               className="home__client-link"
             >
               <img
-                src="/assets/img/Advant-Logo.svg"
+                src="/assets/img/Advant-Logo.png"
                 alt="Advantms"
                 className="home__client-logo"
               />
@@ -96,7 +96,7 @@ const Hero = () => {
               className="home__client-link"
             >
               <img
-                src="/assets/img/Yoel-Logo.svg"
+                src="/assets/img/Yoel-Logo.png"
                 alt="Eco Heroes MX"
                 className="home__client-logo"
               />
@@ -108,7 +108,7 @@ const Hero = () => {
               className="home__client-link"
             >
               <img
-                src="/assets/img/Mezkla-Logo.svg"
+                src="/assets/img/Mezkla-Logo.png"
                 alt="Mezkla FM"
                 className="home__client-logo"
               />
