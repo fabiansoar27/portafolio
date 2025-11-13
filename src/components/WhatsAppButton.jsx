@@ -1,7 +1,7 @@
 import './WhatsAppButton.css';
 
 const WhatsAppButton = () => {
-  const whatsappUrl = "https://wa.me/522941129950?text=%C2%A1Hola!%20Fabi%C3%A1n%2C%20He%20visto%20tu%20portafolio%20web%20y%20me%20encantaron%20tus%20trabajos.%20Me%20gustar%C3%ADa%20hablar%20contigo%20sobre%20un%20proyecto.%20%C2%BFTienes%20tiempo%20para%20conversar%3F";
+  const whatsappUrl = "https://wa.me/522941071690?text=%C2%A1Hola!%20Fabi%C3%A1n%2C%20He%20visto%20tu%20portafolio%20web%20y%20me%20encantaron%20tus%20trabajos.%20Me%20gustar%C3%ADa%20hablar%20contigo%20sobre%20un%20proyecto.%20%C2%BFTienes%20tiempo%20para%20conversar%3F";
 
   return (
     <a

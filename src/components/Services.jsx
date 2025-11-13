@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const Services = () => {
   const [activeModal, setActiveModal] = useState(null);
@@ -99,6 +99,14 @@ const Services = () => {
   const closeModal = () => {
     setActiveModal(null);
   };
+
+  useEffect(() => {
+    if (activeModal !== null) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [activeModal]);
 
   const scrollToContact = () => {
     const contactSection = document.querySelector('#contacto');
