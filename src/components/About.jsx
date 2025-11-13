@@ -34,24 +34,9 @@ const About = () => {
         <div className="about__data">
           <p className="about__description">
             Mi capacidad para combinar diseño gráfico y desarrollo web me permite ofrecer una ventaja única a mis clientes: proyectos visualmente atractivos, con una funcionalidad sólida y profesional. Además, he tomado cursos especializados en instituciones como{' '}
-            <img 
-              src="/assets/img/Google-Logo.svg" 
-              alt="Google"
-              className="about__inline-logo"
-            />
-            ,{' '}
-            <img 
-              src="/assets/img/GitHub-Logo.svg" 
-              alt="GitHub"
-              className="about__inline-logo"
-            />
-            {' '}y{' '}
-            <img 
-              src="/assets/img/Platzi-Logo.svg" 
-              alt="Platzi"
-              className="about__inline-logo"
-            />
-            , lo que respalda y actualiza constantemente mi trabajo.
+            <span style={{color: '#4086F4'}}>G</span><span style={{color: '#EB4132'}}>o</span><span style={{color: '#FBBD01'}}>o</span><span style={{color: '#4086F4'}}>g</span><span style={{color: '#31A952'}}>l</span><span style={{color: '#EB4132'}}>e</span>,{' '}
+            <span style={{color: '#15191F'}}>GitHub Education</span> y{' '}
+            <span style={{color: '#8FC33F'}}>Platzi</span>, lo que respalda y actualiza constantemente mi trabajo.
           </p>
 
           <a 
