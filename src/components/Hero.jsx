@@ -16,7 +16,7 @@ const Hero = () => {
 
           <div className="home__buttons">
             <a
-              download=""
+              download="Fabián-CV.pdf"
               href="/assets/pdf/Fabián-CV.pdf"
               className="button button--ghost"
               onClick={handleDownloadCV}
@@ -106,14 +106,14 @@ const Hero = () => {
               target="_blank"
               rel="noopener noreferrer"
               className="home__client-link"
-            >
-              <img
-                src="/assets/img/Mezkla-Logo.png"
-                alt="Mezkla FM"
-                className="home__client-logo"
-              />
-            </a>
-          </div>
+              >
+                <img
+                  src="/assets/img/Mezkla-Logo.png"
+                  alt="Mezkla FM"
+                  className="home__client-logo"
+                />
+              </a>
+            </div>
         </div>
 
         <div className="home__social">
