@@ -99,7 +99,7 @@ const ProjectDetail = () => {
       if (relatedError) throw relatedError;
       
       const shuffled = (relatedData || []).sort(() => Math.random() - 0.5);
-      setRelatedProjects(shuffled.slice(0, 3));
+      setRelatedProjects(shuffled.slice(0, 4));
   
     } catch (err) {
       console.error('Error fetching project:', err);

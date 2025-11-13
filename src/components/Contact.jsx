@@ -73,32 +73,6 @@ const Contact = () => {
 
           <div className="contact__info">
             <div className="contact__card">
-              <i className='bx bxl-gmail contact__card-icon'></i>
-              <h3 className="contact__card-title">Gmail</h3>
-              <span className="contact__card-data">fartigas27@gmail.com</span>
-              <a 
-                href="mailto:fartigas27@gmail.com?Subject=Mensaje%20de%20Portafolio%20web" 
-                className="contact__button"
-              >
-                Escríbeme <i className='bx bx-right-arrow-alt contact__button-icon'></i>
-              </a>
-            </div>
-
-            <div className="contact__card">
-              <i className='bx bxl-whatsapp contact__card-icon'></i>
-              <h3 className="contact__card-title">WhatsApp</h3>
-              <span className="contact__card-data">+52 294 112 9950</span>
-              <a 
-                href="https://wa.me/522941129950?text=%C2%A1Hola!%20Fabi%C3%A1n%2C%20He%20visto%20tu%20portafolio%20web%20y%20me%20encantaron%20tus%20trabajos.%20Me%20gustar%C3%ADa%20hablar%20contigo%20sobre%20un%20proyecto.%20%C2%BFTienes%20tiempo%20para%20conversar%3F" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="contact__button"
-              >
-                Escríbeme <i className='bx bx-right-arrow-alt contact__button-icon'></i>
-              </a>
-            </div>
-
-            <div className="contact__card">
               <i className='bx bxl-messenger contact__card-icon'></i>
               <h3 className="contact__card-title">Messenger</h3>
               <span className="contact__card-data">Fabiansoar</span>
@@ -113,15 +87,16 @@ const Contact = () => {
             </div>
 
             <div className="contact__card">
-              <i className='bx bx-calendar contact__card-icon'></i>
-              <h3 className="contact__card-title">Calendly</h3>
+              <i className='bx bxl-whatsapp contact__card-icon'></i>
+              <h3 className="contact__card-title">WhatsApp</h3>
+              <span className="contact__card-data">+52 2941071690</span>
               <a 
-                href="https://calendly.com/fartigas27?primary_color=51020b" 
+                href="https://wa.me/522941071690?text=%C2%A1Hola!%20Fabi%C3%A1n%2C%20He%20visto%20tu%20portafolio%20web%20y%20me%20encantaron%20tus%20trabajos.%20Me%20gustar%C3%ADa%20hablar%20contigo%20sobre%20un%20proyecto.%20%C2%BFTienes%20tiempo%20para%20conversar%3F" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="contact__button"
               >
-                Agendar una cita <i className='bx bx-right-arrow-alt contact__button-icon'></i>
+                Escríbeme <i className='bx bx-right-arrow-alt contact__button-icon'></i>
               </a>
             </div>
           </div>
