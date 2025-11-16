@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { lockScroll, unlockScroll } from '../utils/scrollLock';
 
 const Services = () => {
   const [activeModal, setActiveModal] = useState(null);
@@ -94,31 +95,13 @@ const Services = () => {
 
   const openModal = (id) => {
     setActiveModal(id);
+    lockScroll();
   };
 
   const closeModal = () => {
     setActiveModal(null);
+    unlockScroll();
   };
-
-  useEffect(() => {
-    const body = document.body;
-    let scrollY = 0;
-
-    if (activeModal !== null) {
-      // Lock scroll
-      scrollY = window.scrollY;
-      body.classList.add('body-scroll-lock');
-      body.style.top = `-${scrollY}px`;
-    } else {
-      // Unlock scroll
-      if (body.classList.contains('body-scroll-lock')) {
-        const scrollY = -parseInt(body.style.top, 10);
-        body.classList.remove('body-scroll-lock');
-        body.style.top = '';
-        window.scrollTo(0, scrollY || 0);
-      }
-    }
-  }, [activeModal]);
 
   return (
     <section className="services section" id="servicios">
