@@ -6,8 +6,9 @@ body {
   min-width: 320px;
 }
 
-body.no-scroll {
-  overflow: hidden;
+body.body-scroll-lock {
   position: fixed;
-  width: 100%;
+  left: 0;
+  right: 0;
+  overflow: hidden;
 }

@@ -1,8 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 
 const Services = () => {
   const [activeModal, setActiveModal] = useState(null);
-  const scrollY = useRef(0);
 
   const services = [
     {
@@ -102,29 +101,24 @@ const Services = () => {
   };
 
   useEffect(() => {
+    const body = document.body;
+    let scrollY = 0;
+
     if (activeModal !== null) {
       // Lock scroll
-      scrollY.current = window.scrollY;
-      const body = document.body;
-      body.classList.add('no-scroll');
-      body.style.top = `-${scrollY.current}px`;
+      scrollY = window.scrollY;
+      body.classList.add('body-scroll-lock');
+      body.style.top = `-${scrollY}px`;
     } else {
       // Unlock scroll
-      const body = document.body;
-      if (body.classList.contains('no-scroll')) {
-        body.classList.remove('no-scroll');
+      if (body.classList.contains('body-scroll-lock')) {
+        const scrollY = -parseInt(body.style.top, 10);
+        body.classList.remove('body-scroll-lock');
         body.style.top = '';
-        window.scrollTo(0, scrollY.current);
+        window.scrollTo(0, scrollY || 0);
       }
     }
   }, [activeModal]);
-
-  const scrollToContact = () => {
-    const contactSection = document.querySelector('#contacto');
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
 
   return (
     <section className="services section" id="servicios">
