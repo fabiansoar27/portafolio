@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const Services = () => {
   const [activeModal, setActiveModal] = useState(null);
+  const scrollY = useRef(0);
 
   const services = [
     {
@@ -102,11 +103,19 @@ const Services = () => {
 
   useEffect(() => {
     if (activeModal !== null) {
-      document.documentElement.classList.add('no-scroll');
-      document.body.classList.add('no-scroll');
+      // Lock scroll
+      scrollY.current = window.scrollY;
+      const body = document.body;
+      body.classList.add('no-scroll');
+      body.style.top = `-${scrollY.current}px`;
     } else {
-      document.documentElement.classList.remove('no-scroll');
-      document.body.classList.remove('no-scroll');
+      // Unlock scroll
+      const body = document.body;
+      if (body.classList.contains('no-scroll')) {
+        body.classList.remove('no-scroll');
+        body.style.top = '';
+        window.scrollTo(0, scrollY.current);
+      }
     }
   }, [activeModal]);
 
