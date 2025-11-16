@@ -102,8 +102,10 @@ const Services = () => {
 
   useEffect(() => {
     if (activeModal !== null) {
+      document.documentElement.classList.add('no-scroll');
       document.body.classList.add('no-scroll');
     } else {
+      document.documentElement.classList.remove('no-scroll');
       document.body.classList.remove('no-scroll');
     }
   }, [activeModal]);
