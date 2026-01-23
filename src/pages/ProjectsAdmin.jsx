@@ -189,9 +189,9 @@ const ProjectsAdmin = () => {
                       </div>
                       <div className="project-card-admin__content">
                         <h3 className="project-card-admin__title">{project.title}</h3>
-                        {project.description && (
+                        {/* {project.description && (
                           <p className="project-card-admin__description">{stripHtml(project.description)}</p>
-                        )}
+                        )} */}
                         <div className="project-card-admin__meta">
                           {project.project_date && (
                             <span className="project-card-admin__date">

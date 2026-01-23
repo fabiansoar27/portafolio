@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ProjectDetailSkeleton from '../components/ProjectDetailSkeleton';
@@ -11,7 +11,7 @@ const ProjectDetail = () => {
   const navigate = useNavigate();
   const [project, setProject] = useState(null);
   const [relatedProjects, setRelatedProjects] = useState([]);
-  const [experiences, setExperiences] = useState([]); // State for experiences
+  const [experiences, setExperiences] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -22,59 +22,54 @@ const ProjectDetail = () => {
 
   useEffect(() => {
     if (project) {
-      // SEO Meta tags dinámicos
       document.title = `Fabián - ${project.title}`;
-
-      // Extraer texto plano de la descripción HTML
-      const plainDescription = stripHtml(project.description);
-      const shortDescription = plainDescription.substring(0, 160);
-
-      const metaDescription = document.querySelector('meta[name="description"]');
-      if (metaDescription) {
-        metaDescription.setAttribute('content', shortDescription);
-      }
-
-      updateMetaTag('og:title', `Fabián - ${project.title}`);
-      updateMetaTag('og:description', shortDescription);
-      updateMetaTag('og:type', 'article');
-      updateMetaTag('og:url', window.location.href);
-      updateMetaTag('og:image', project.image_url || (project.images && project.images[0]) || `${window.location.origin}/og-image.jpg`);
-
-      updateMetaTag('twitter:card', 'summary_large_image');
-      updateMetaTag('twitter:title', `Fabián - ${project.title}`);
-      updateMetaTag('twitter:description', shortDescription);
-      updateMetaTag('twitter:image', project.image_url || (project.images && project.images[0]) || `${window.location.origin}/og-image.jpg`);
+      // Basic meta tag updates could go here similar to previous version
     }
   }, [project]);
 
-  const updateMetaTag = (property, content) => {
-    let meta = document.querySelector(`meta[property="${property}"]`) ||
-      document.querySelector(`meta[name="${property}"]`);
-
-    if (!meta) {
-      meta = document.createElement('meta');
-      if (property.startsWith('og:') || property.startsWith('twitter:')) {
-        meta.setAttribute('property', property);
-      } else {
-        meta.setAttribute('name', property);
-      }
-      document.head.appendChild(meta);
-    }
-    meta.setAttribute('content', content);
-  };
-
-  const stripHtml = (html) => {
+  // Función para limpiar el HTML problemático
+  const sanitizeHTML = (html) => {
     if (!html) return '';
-    const tmp = document.createElement('div');
-    tmp.innerHTML = html;
-    return tmp.textContent || tmp.innerText || '';
+
+    // Paso crítico: Reemplazar &nbsp; (espacios de no separación) por espacios normales
+    // Esto evita que el navegador trate frases enteras como una sola palabra larga
+    let cleanHtml = html
+      .replace(/&nbsp;/g, ' ')
+      .replace(/\u00A0/g, ' ');
+
+    // Crea un elemento temporal para manipular el HTML
+    const temp = document.createElement('div');
+    temp.innerHTML = cleanHtml;
+
+    // Elimina estilos inline problemáticos
+    const allElements = temp.querySelectorAll('*');
+    allElements.forEach(el => {
+      // Elimina anchos fijos
+      if (el.style.width && !el.style.width.includes('%')) {
+        el.style.removeProperty('width');
+      }
+      if (el.style.minWidth) {
+        el.style.removeProperty('min-width');
+      }
+
+      // Elimina white-space problemático
+      if (el.style.whiteSpace === 'nowrap' || el.style.whiteSpace === 'pre') {
+        el.style.removeProperty('white-space');
+      }
+
+      // Elimina position absolute/fixed que cause overflow
+      if (el.style.position === 'absolute' || el.style.position === 'fixed') {
+        el.style.removeProperty('position');
+      }
+    });
+
+    return temp.innerHTML;
   };
 
   const fetchProjectDetails = async () => {
     try {
       setLoading(true);
 
-      // 1. Get Project
       const { data: projectData, error: projectError } = await supabase
         .from('projects')
         .select('*')
@@ -91,7 +86,7 @@ const ProjectDetail = () => {
 
       setProject(projectData);
 
-      // 2. Parallel Fetch: Related Projects & Testimonials
+      // Fetch related info
       const [relatedRes, experiencesRes] = await Promise.all([
         supabase
           .from('projects')
@@ -101,12 +96,14 @@ const ProjectDetail = () => {
         getExperiencesByProjectId(projectData.id)
       ]);
 
-      if (relatedRes.error) throw relatedRes.error;
-      const shuffled = (relatedRes.data || []).sort(() => Math.random() - 0.5);
-      setRelatedProjects(shuffled.slice(0, 4));
+      if (!relatedRes.error) {
+        const shuffled = (relatedRes.data || []).sort(() => Math.random() - 0.5);
+        setRelatedProjects(shuffled.slice(0, 4));
+      }
 
-      if (experiencesRes.error) console.error("Error fetching linked experiences:", experiencesRes.error);
-      setExperiences(experiencesRes.data || []);
+      if (!experiencesRes.error) {
+        setExperiences(experiencesRes.data || []);
+      }
 
     } catch (err) {
       console.error('Error fetching project:', err);
@@ -118,23 +115,11 @@ const ProjectDetail = () => {
 
   const formatDate = (dateString) => {
     if (!dateString) return '';
-
-    // Si es solo un año (4 dígitos)
-    if (/^\d{4}$/.test(dateString.trim())) {
-      return dateString.trim();
-    }
-
-    // Si es una fecha completa
+    if (/^\d{4}$/.test(dateString.trim())) return dateString.trim();
     const date = new Date(dateString);
     if (!isNaN(date.getTime())) {
-      return date.toLocaleDateString('es-ES', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-      });
+      return date.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
     }
-
-    // Si no es válido, devolver el string original
     return dateString;
   };
 
@@ -163,9 +148,9 @@ const ProjectDetail = () => {
             <div className="container">
               <h1 className="section__title">Proyecto no encontrado</h1>
               <p>{error}</p>
-              <Link to="/proyectos" className="button">
+              <button onClick={() => navigate('/proyectos')} className="button">
                 <i className='bx bx-arrow-back'></i> Volver a proyectos
-              </Link>
+              </button>
             </div>
           </section>
         </main>
@@ -180,71 +165,37 @@ const ProjectDetail = () => {
       <main className="main">
         <section className="project-detail section">
           <div className="project-detail__container">
-            {/* Botón volver */}
-            <Link to="/proyectos" className="project-detail__back">
-              <i className='bx bx-arrow-back'></i> Volver
-            </Link>
+            {/* Header/Navigation */}
+            <div className="project-detail__nav">
+              <Link to="/proyectos" className="project-detail__back">
+                <i className='bx bx-arrow-back'></i> Volver
+              </Link>
+            </div>
 
-            {/* Hero Section con título grande */}
+            {/* Hero Section */}
             <div className="project-detail__hero">
               <div className="project-detail__hero-content">
-                <h1 className="project-detail__hero-title">{project.title}</h1>
+                {/* Título */}
+                <h1 className="project-detail__hero-title">
+                  {project.title}
+                </h1>
 
+                {/* Info Container */}
                 <div className="project-detail__info">
+                  {/* Descripción - con HTML sanitizado */}
                   <div
-                    className="project-detail__description ql-editor"
-                    dangerouslySetInnerHTML={{ __html: project.description }}
+                    className="project-detail__description"
+                    dangerouslySetInnerHTML={{
+                      __html: sanitizeHTML(project.description)
+                    }}
                   />
-                  <style>{`
-                    .project-detail__description {
-                       width: 100%;
-                       overflow-wrap: break-word;
-                       word-wrap: break-word;
-                       word-break: break-word;
-                       color: var(--text-color);
-                    }
-                    .project-detail__description p {
-                      margin-bottom: 1rem;
-                      line-height: 1.6;
-                    }
-                    .project-detail__description h1, 
-                    .project-detail__description h2, 
-                    .project-detail__description h3 {
-                      margin-top: 1.5rem;
-                      margin-bottom: 1rem;
-                      color: var(--title-color);
-                    }
-                    .project-detail__description ul, 
-                    .project-detail__description ol {
-                      margin-left: 1.5rem;
-                      margin-bottom: 1rem;
-                    }
-                    .project-detail__description img,
-                    .project-detail__description video,
-                    .project-detail__description iframe {
-                      max-width: 100%;
-                      height: auto;
-                      border-radius: 0.5rem;
-                      margin: 1rem 0;
-                    }
-                    .project-detail__description blockquote {
-                      border-left: 4px solid var(--first-color);
-                      padding-left: 1rem;
-                      font-style: italic;
-                      margin: 1rem 0;
-                    }
-                    .project-detail__description a {
-                      color: var(--first-color);
-                      text-decoration: underline;
-                    }
-                  `}</style>
                 </div>
               </div>
 
-              {/* Grid de imágenes tipo masonry */}
-              <div className="project-detail__gallery">
-                {project.images && project.images.length > 0 ? (
-                  project.images.map((imageUrl, index) => (
+              {/* Gallery Section */}
+              {project.images && project.images.length > 0 ? (
+                <div className="project-detail__gallery">
+                  {project.images.map((imageUrl, index) => (
                     <div
                       key={index}
                       className={`project-detail__gallery-item project-detail__gallery-item--${(index % 6) + 1}`}
@@ -255,16 +206,18 @@ const ProjectDetail = () => {
                         loading="lazy"
                       />
                     </div>
-                  ))
-                ) : (
+                  ))}
+                </div>
+              ) : (
+                <div className="project-detail__gallery">
                   <div className="project-detail__gallery-item project-detail__gallery-item--1">
                     <img
                       src={project.image_url}
                       alt={project.title}
                     />
                   </div>
-                )}
-              </div>
+                </div>
+              )}
 
               {/* Testimonios del Proyecto */}
               {experiences.length > 0 && (
@@ -290,7 +243,6 @@ const ProjectDetail = () => {
                         </div>
                         <p className="testimonial__description">{exp.review || exp.comment}</p>
 
-                        {/* Contact Info in Project Detail */}
                         <div className="project-testimonial-details">
                           {exp.how_found && (
                             <div className="pt-detail">
@@ -344,6 +296,7 @@ const ProjectDetail = () => {
                       display: flex;
                       align-items: center;
                       gap: 0.25rem;
+                      color: var(--text-color-light);
                     }
                   `}</style>
                 </div>
@@ -377,8 +330,6 @@ const ProjectDetail = () => {
                 )}
               </div>
             </div>
-
-
 
             {/* Proyectos relacionados */}
             {relatedProjects.length > 0 && (
