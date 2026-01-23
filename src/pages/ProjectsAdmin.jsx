@@ -45,7 +45,7 @@ const ProjectsAdmin = () => {
     try {
       const { data, error } = await createProject(projectData);
       if (error) throw error;
-      
+
       setProjects(prev => [data, ...prev]);
       setShowForm(false);
       toast.success('¡Proyecto creado exitosamente!');
@@ -59,7 +59,7 @@ const ProjectsAdmin = () => {
     try {
       const { data, error } = await updateProject(editingProject.id, projectData);
       if (error) throw error;
-      
+
       setProjects(prev => prev.map(p => p.id === data.id ? data : p));
       setShowForm(false);
       setEditingProject(null);
@@ -77,7 +77,7 @@ const ProjectsAdmin = () => {
 
     try {
       setDeletingId(project.id);
-      
+
       // Delete images from storage
       if (project.image_url) {
         await deleteImage(project.image_url);
@@ -110,6 +110,21 @@ const ProjectsAdmin = () => {
     setEditingProject(null);
   };
 
+  const stripHtml = (html) => {
+    if (!html) return '';
+
+    // 1. Replace block element closing tags and line breaks with a space to ensure separation
+    let processed = html.replace(/<\/(p|div|h[1-6]|li|ul|ol|blockquote)>|<br\s*\/?>/gi, ' ');
+
+    // 2. Wrap via temporary element to strip remaining HTML tags
+    const tmp = document.createElement('div');
+    tmp.innerHTML = processed;
+    const text = tmp.textContent || tmp.innerText || '';
+
+    // 3. Clean up extra whitespace
+    return text.replace(/\s+/g, ' ').trim();
+  };
+
   if (loading) {
     return (
       <AdminLayout>
@@ -133,109 +148,109 @@ const ProjectsAdmin = () => {
           </div>
         </div>
 
-      <div className="admin-container">
-        {error && (
-          <div className="admin-error">
-            <i className='bx bx-error-circle'></i>
-            <p>Error: {error}</p>
-          </div>
-        )}
-
-        {!showForm ? (
-          <>
-            <div className="admin-section-header">
-              <h2 className="admin-section-title">
-                Proyectos ({projects.length})
-              </h2>
-              <button
-                onClick={() => setShowForm(true)}
-                className="button"
-              >
-                <i className='bx bx-plus'></i>
-                Nuevo Proyecto
-              </button>
+        <div className="admin-container">
+          {error && (
+            <div className="admin-error">
+              <i className='bx bx-error-circle'></i>
+              <p>Error: {error}</p>
             </div>
+          )}
 
-            {projects.length === 0 ? (
-              <div className="admin-empty">
-                <i className='bx bx-folder-open'></i>
-                <p>No hay proyectos aún</p>
-                <button onClick={() => setShowForm(true)} className="button">
-                  Crear primer proyecto
+          {!showForm ? (
+            <>
+              <div className="admin-section-header">
+                <h2 className="admin-section-title">
+                  Proyectos ({projects.length})
+                </h2>
+                <button
+                  onClick={() => setShowForm(true)}
+                  className="button"
+                >
+                  <i className='bx bx-plus'></i>
+                  Nuevo Proyecto
                 </button>
               </div>
-            ) : (
-              <div className="projects-grid">
-                {projects.map((project) => (
-                  <div key={project.id} className="project-card-admin">
-                    <div className="project-card-admin__image">
-                      <img src={project.image_url} alt={project.title} />
-                      <span className="project-card-admin__category">{project.category}</span>
-                    </div>
-                    <div className="project-card-admin__content">
-                      <h3 className="project-card-admin__title">{project.title}</h3>
-                      {project.description && (
-                        <p className="project-card-admin__description">{project.description}</p>
-                      )}
-                      <div className="project-card-admin__meta">
-                        {project.project_date && (
-                          <span className="project-card-admin__date">
-                            <i className='bx bx-calendar'></i>
-                            {new Date(project.project_date).toLocaleDateString('es-ES')}
-                          </span>
+
+              {projects.length === 0 ? (
+                <div className="admin-empty">
+                  <i className='bx bx-folder-open'></i>
+                  <p>No hay proyectos aún</p>
+                  <button onClick={() => setShowForm(true)} className="button">
+                    Crear primer proyecto
+                  </button>
+                </div>
+              ) : (
+                <div className="projects-grid">
+                  {projects.map((project) => (
+                    <div key={project.id} className="project-card-admin">
+                      <div className="project-card-admin__image">
+                        <img src={project.image_url} alt={project.title} />
+                        <span className="project-card-admin__category">{project.category}</span>
+                      </div>
+                      <div className="project-card-admin__content">
+                        <h3 className="project-card-admin__title">{project.title}</h3>
+                        {project.description && (
+                          <p className="project-card-admin__description">{stripHtml(project.description)}</p>
                         )}
-                        {project.images && project.images.length > 0 && (
-                          <span className="project-card-admin__images">
-                            <i className='bx bx-image'></i>
-                            {project.images.length} imágenes
-                          </span>
-                        )}
+                        <div className="project-card-admin__meta">
+                          {project.project_date && (
+                            <span className="project-card-admin__date">
+                              <i className='bx bx-calendar'></i>
+                              {new Date(project.project_date).toLocaleDateString('es-ES')}
+                            </span>
+                          )}
+                          {project.images && project.images.length > 0 && (
+                            <span className="project-card-admin__images">
+                              <i className='bx bx-image'></i>
+                              {project.images.length} imágenes
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="project-card-admin__actions">
+                        <button
+                          onClick={() => handleEdit(project)}
+                          className="button button--small"
+                          disabled={deletingId === project.id}
+                        >
+                          <i className='bx bx-edit'></i>
+                          Editar
+                        </button>
+                        <button
+                          onClick={() => handleDeleteProject(project)}
+                          className="button button--small button--danger"
+                          disabled={deletingId === project.id}
+                        >
+                          {deletingId === project.id ? (
+                            <>
+                              <i className='bx bx-loader-alt bx-spin'></i>
+                              Eliminando...
+                            </>
+                          ) : (
+                            <>
+                              <i className='bx bx-trash'></i>
+                              Eliminar
+                            </>
+                          )}
+                        </button>
                       </div>
                     </div>
-                    <div className="project-card-admin__actions">
-                      <button
-                        onClick={() => handleEdit(project)}
-                        className="button button--small"
-                        disabled={deletingId === project.id}
-                      >
-                        <i className='bx bx-edit'></i>
-                        Editar
-                      </button>
-                      <button
-                        onClick={() => handleDeleteProject(project)}
-                        className="button button--small button--danger"
-                        disabled={deletingId === project.id}
-                      >
-                        {deletingId === project.id ? (
-                          <>
-                            <i className='bx bx-loader-alt bx-spin'></i>
-                            Eliminando...
-                          </>
-                        ) : (
-                          <>
-                            <i className='bx bx-trash'></i>
-                            Eliminar
-                          </>
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </>
-        ) : (
-          <div className="admin-form-container">
-            <h2 className="admin-section-title">
-              {editingProject ? 'Editar Proyecto' : 'Nuevo Proyecto'}
-            </h2>
-            <ProjectForm
-              project={editingProject}
-              onSubmit={editingProject ? handleUpdateProject : handleCreateProject}
-              onCancel={handleCancelForm}
-            />
-          </div>
-        )}
+                  ))}
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="admin-form-container">
+              <h2 className="admin-section-title">
+                {editingProject ? 'Editar Proyecto' : 'Nuevo Proyecto'}
+              </h2>
+              <ProjectForm
+                project={editingProject}
+                onSubmit={editingProject ? handleUpdateProject : handleCreateProject}
+                onCancel={handleCancelForm}
+              />
+            </div>
+          )}
         </div>
       </div>
     </AdminLayout>

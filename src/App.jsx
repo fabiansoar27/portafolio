@@ -5,7 +5,7 @@ import ProjectsList from './pages/ProjectsList';
 import ProjectDetail from './pages/ProjectDetail';
 import Admin from './pages/Admin';
 import ProjectsAdmin from './pages/ProjectsAdmin';
-import TestimonialsAdmin from './pages/TestimonialsAdmin';
+import ExperiencesAdmin from './pages/ExperiencesAdmin';
 import Login from './pages/Login';
 import ProtectedRoute from './components/ProtectedRoute';
 import WhatsAppButton from './components/WhatsAppButton';
@@ -27,34 +27,34 @@ const AppRoutes = () => {
         <Route path="/home" element={<Home />} />
         <Route path="/proyectos" element={<ProjectsList />} />
         <Route path="/proyectos/:id" element={<ProjectDetail />} />
-        
+
         {/* Rutas de Administración */}
         <Route path="/admin/login" element={<Login />} />
-        <Route 
-          path="/admin" 
+        <Route
+          path="/admin"
           element={
             <ProtectedRoute>
               <Admin />
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/admin/projects" 
+        <Route
+          path="/admin/projects"
           element={
             <ProtectedRoute>
               <ProjectsAdmin />
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/admin/testimonials" 
+        <Route
+          path="/admin/experiences"
           element={
             <ProtectedRoute>
-              <TestimonialsAdmin />
+              <ExperiencesAdmin />
             </ProtectedRoute>
-          } 
+          }
         />
-        
+
         {/* Redirigir rutas desconocidas al inicio */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

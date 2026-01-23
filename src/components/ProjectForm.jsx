@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
 import { uploadImage, uploadMultipleImages } from '../services/projectsService';
 
 /**
@@ -26,6 +28,26 @@ const ProjectForm = ({ project = null, onSubmit, onCancel }) => {
   const [imagePreview, setImagePreview] = useState('');
   const [heroImagePreview, setHeroImagePreview] = useState('');
   const [galleryPreviews, setGalleryPreviews] = useState(['', '', '', '']);
+
+  // Quill modules configuration
+  const modules = {
+    toolbar: [
+      [{ 'header': [1, 2, 3, false] }],
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ 'color': [] }, { 'background': [] }],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      ['link'],
+      ['clean']
+    ],
+  };
+
+  const formats = [
+    'header',
+    'bold', 'italic', 'underline', 'strike',
+    'color', 'background',
+    'list', 'bullet',
+    'link'
+  ];
 
   // Load existing project data if editing
   useEffect(() => {
@@ -73,6 +95,13 @@ const ProjectForm = ({ project = null, onSubmit, onCancel }) => {
         slug
       }));
     }
+  };
+
+  const handleDescriptionChange = (content) => {
+    setFormData(prev => ({
+      ...prev,
+      description: content
+    }));
   };
 
   const handleMainImageChange = (e) => {
@@ -220,28 +249,61 @@ const ProjectForm = ({ project = null, onSubmit, onCancel }) => {
         <small className="form-hint">Se genera automáticamente del título</small>
       </div>
 
-      <div className="form-group">
+      <div className="form-group" style={{ marginBottom: '4rem' }}>
         <label htmlFor="description" className="form-label">
-          Descripción (HTML permitido)
+          Descripción
         </label>
-        <textarea
-          id="description"
-          name="description"
-          className="form-textarea form-textarea--html"
-          value={formData.description}
-          onChange={handleInputChange}
-          rows="8"
-          disabled={loading}
-          placeholder="Puedes usar HTML: <p>Párrafo</p> <strong>Negrita</strong> <em>Cursiva</em> <a href='url'>Enlace</a>"
-        />
-        <small className="form-hint">
-          <strong>Formato HTML:</strong><br />
-          • Párrafos: <code>&lt;p&gt;Tu texto&lt;/p&gt;</code><br />
-          • Negrita: <code>&lt;strong&gt;texto&lt;/strong&gt;</code><br />
-          • Cursiva: <code>&lt;em&gt;texto&lt;/em&gt;</code><br />
-          • Enlace: <code>&lt;a href="url"&gt;texto&lt;/a&gt;</code><br />
-          • Color: <code>&lt;span style="color: #ff0000"&gt;texto&lt;/span&gt;</code>
-        </small>
+        <div className="quill-wrapper">
+          <ReactQuill
+            theme="snow"
+            value={formData.description}
+            onChange={handleDescriptionChange}
+            modules={modules}
+            formats={formats}
+            readOnly={loading}
+            placeholder="Escribe la descripción del proyecto..."
+            style={{ height: '300px' }}
+          />
+        </div>
+        <style>{`
+          .quill-wrapper .ql-container {
+            font-family: var(--body-font);
+            font-size: var(--normal-font-size);
+            border-bottom-left-radius: 0.5rem;
+            border-bottom-right-radius: 0.5rem;
+          }
+          .quill-wrapper .ql-toolbar {
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+            border-color: #ccc;
+          }
+          .quill-wrapper .ql-container.ql-snow {
+             border-color: #ccc;
+          }
+          .quill-wrapper .ql-editor {
+            background-color: #fff;
+            min-height: 200px;
+          }
+          /* Dark mode support */
+          body.dark-theme .quill-wrapper .ql-toolbar,
+          body.dark-theme .quill-wrapper .ql-container {
+            border-color: var(--border-color);
+            background-color: var(--container-color);
+          }
+          body.dark-theme .quill-wrapper .ql-editor {
+            background-color: var(--container-color);
+            color: var(--text-color);
+          }
+          body.dark-theme .quill-wrapper .ql-picker {
+            color: var(--text-color);
+          }
+          body.dark-theme .quill-wrapper .ql-stroke {
+            stroke: var(--text-color);
+          }
+          body.dark-theme .quill-wrapper .ql-fill {
+            fill: var(--text-color);
+          }
+        `}</style>
       </div>
 
       <div className="form-row">

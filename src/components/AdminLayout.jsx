@@ -38,9 +38,9 @@ const AdminLayout = ({ children }) => {
       label: 'Proyectos'
     },
     {
-      path: '/admin/testimonials',
+      path: '/admin/experiences',
       icon: 'bx-message-square-detail',
-      label: 'Testimonios'
+      label: 'Experiencias'
     }
   ];
 
@@ -60,7 +60,7 @@ const AdminLayout = ({ children }) => {
             <i className='bx bx-code-alt'></i>
             <span>Admin Panel</span>
           </div>
-          <button 
+          <button
             className="admin-sidebar__close"
             onClick={toggleSidebar}
           >
@@ -97,7 +97,7 @@ const AdminLayout = ({ children }) => {
               <p className="admin-sidebar__user-email">{user?.email}</p>
             </div>
           </div>
-          <button 
+          <button
             className="admin-sidebar__logout"
             onClick={handleLogout}
           >
@@ -109,7 +109,7 @@ const AdminLayout = ({ children }) => {
 
       {/* Overlay for mobile */}
       {sidebarOpen && (
-        <div 
+        <div
           className="admin-sidebar__overlay"
           onClick={toggleSidebar}
         ></div>
@@ -119,14 +119,14 @@ const AdminLayout = ({ children }) => {
       <div className="admin-content">
         {/* Top bar for mobile */}
         <div className="admin-topbar">
-          <button 
+          <button
             className="admin-topbar__menu"
             onClick={toggleSidebar}
           >
             <i className='bx bx-menu'></i>
           </button>
           <h1 className="admin-topbar__title">Panel de Administración</h1>
-          <button 
+          <button
             className="admin-topbar__logout"
             onClick={handleLogout}
           >

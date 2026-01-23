@@ -9,8 +9,8 @@ const Testimonials = () => {
 
   const renderStars = (rating) => {
     return Array.from({ length: 5 }, (_, index) => (
-      <i 
-        key={index} 
+      <i
+        key={index}
         className={index < rating ? 'bx bxs-star' : 'bx bx-star'}
       ></i>
     ));
@@ -79,26 +79,29 @@ const Testimonials = () => {
             }
           }}
         >
-          {testimonials.map((testimonial) => (
-            <SwiperSlide key={testimonial.id}>
-              <div className="testimonial__card">
-                <div className="testimonial__header">
-                  <img 
-                    src={testimonial.image_url} 
-                    alt={testimonial.name} 
-                    className="testimonial__img" 
-                  />
-                  <div className="testimonial__info">
-                    <h3 className="testimonial__name">{testimonial.name}</h3>
-                    <p className="stars">
-                      {renderStars(testimonial.rating)}
-                    </p>
+          {testimonials
+            .filter(t => t.show_on_home !== false) // Filter for show_on_home
+            .map((testimonial) => (
+              <SwiperSlide key={testimonial.id}>
+                <div className="testimonial__card">
+                  <div className="testimonial__header">
+                    <img
+                      src={testimonial.image_url}
+                      alt={testimonial.name}
+                      className="testimonial__img"
+                    />
+                    <div className="testimonial__info">
+                      <h3 className="testimonial__name">{testimonial.name}</h3>
+                      <p className="stars">
+                        {renderStars(testimonial.rating)}
+                      </p>
+                    </div>
                   </div>
+                  {/* Updated to use review instead of comment */}
+                  <p className="testimonial__description">{testimonial.review || testimonial.comment}</p>
                 </div>
-                <p className="testimonial__description">{testimonial.comment}</p>
-              </div>
-            </SwiperSlide>
-          ))}
+              </SwiperSlide>
+            ))}
         </Swiper>
       </div>
     </section>

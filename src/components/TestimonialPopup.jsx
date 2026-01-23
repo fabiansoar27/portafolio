@@ -8,7 +8,7 @@ const TestimonialPopup = ({ isOpen, onClose }) => {
   const [error, setError] = useState('');
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState('');
-  
+
   const [formData, setFormData] = useState({
     how_found: '',
     service_acquired: '',
@@ -35,7 +35,7 @@ const TestimonialPopup = ({ isOpen, onClose }) => {
         setError('La imagen debe ser menor a 2 MB');
         return;
       }
-      
+
       setImageFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -60,9 +60,9 @@ const TestimonialPopup = ({ isOpen, onClose }) => {
         imageUrl = publicUrl;
       }
 
-      // Guardar testimonio en Supabase
+      // Guardar testimonio en Supabase (Tabla experiences)
       const { error: insertError } = await supabase
-        .from('testimonials')
+        .from('experiences')
         .insert([
           {
             name: formData.name,
@@ -73,7 +73,7 @@ const TestimonialPopup = ({ isOpen, onClose }) => {
             service_acquired: formData.service_acquired,
             improvement_aspect: formData.improvement_aspect,
             improvement_other: formData.improvement_other,
-            status: 'pending'
+            status: 'new' // Newly submitted experiences start as 'new'
           }
         ]);
 
@@ -119,7 +119,7 @@ const TestimonialPopup = ({ isOpen, onClose }) => {
           <>
             <h2 className="popup-title">Formulario de Servicio</h2>
             <p className="popup-description">
-              Este formulario fue elaborado con el fin de leer sus experiencias, consejos u opiniones al trabajar juntos. 
+              Este formulario fue elaborado con el fin de leer sus experiencias, consejos u opiniones al trabajar juntos.
               Así podré mejorar y brindar mejores experiencias, de antemano muchas gracias.
             </p>
 

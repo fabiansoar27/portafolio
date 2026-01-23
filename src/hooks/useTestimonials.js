@@ -11,9 +11,9 @@ const useTestimonials = () => {
       try {
         setLoading(true);
         const { data, error } = await supabase
-          .from('testimonials')
+          .from('experiences')
           .select('*')
-          .eq('status', 'approved') // Solo testimonios aprobados en el frontend público
+          .eq('status', 'published') // Solo testimonios publicados en el frontend público
           .order('created_at', { ascending: true });
 
         if (error) throw error;
